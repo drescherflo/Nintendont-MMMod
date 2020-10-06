@@ -51,6 +51,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "ff_utf8.h"
 #include "diskio.h"
+
+#include "mmmod_animation.h"
+
 // from diskio.c
 extern DISC_INTERFACE *driver[_VOLUMES];
 
@@ -1369,6 +1372,11 @@ int main(int argc, char **argv)
 		DrawBuffer(); // Draw all status messages
 	}
 //	memcpy( (void*)0x80000000, (void*)0x90140000, 0x1200000 );
+	if (!useipl && !(ncfg->Config & NIN_CFG_SKIP_IPL))
+	{
+		play_bios_animation();
+	}
+	
 	GRRLIB_FreeTexture(background);
 	GRRLIB_FreeTexture(screen_buffer);
 	GRRLIB_FreeTTF(myFont);

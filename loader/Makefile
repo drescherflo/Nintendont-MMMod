@@ -21,6 +21,7 @@ BUILD		:= build
 SOURCES		:= source
 SOURCES		+= source/unzip
 DATA		:= data
+DATA		+= data/gcbootanim
 INCLUDES	:= include ../fatfs
 
 #---------------------------------------------------------------------------------
@@ -38,8 +39,8 @@ LDFLAGS	= -g $(MACHDEP) -Wl,-Map,$(notdir $@).map,-wrap,wiiuse_register
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
 #---------------------------------------------------------------------------------
-LIBS	:= -lfreetype -lpngu -lpng -lz \
-	   -lwiiuse -lwiidrc -lwupc -lbte -lfatfs-ppc -logc -ldi -lm
+LIBS	:= -lfreetype -ljpeg -lpngu -lpng -lz \
+	   -lwiiuse -lwiidrc -lwupc -lbte -lasnd -lmad -lfatfs-ppc -logc -ldi -lm
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
@@ -143,6 +144,16 @@ $(OUTPUT).elf: $(OFILES)
 	@$(bin2o)
 	
 %.png.o	:	%.png
+#---------------------------------------------------------------------------------
+	@echo $(notdir $<)
+	@$(bin2o)
+
+%.mp3.o	:	%.mp3
+#---------------------------------------------------------------------------------
+	@echo $(notdir $<)
+	@$(bin2o)
+	
+%.jpg.o	:	%.jpg
 #---------------------------------------------------------------------------------
 	@echo $(notdir $<)
 	@$(bin2o)

@@ -20,6 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ------------------------------------------------------------------------------*/
 
+#define ENABLE_JPEG
+
 #include <stdlib.h>
 #include <malloc.h>
 #include <string.h>
