@@ -183,13 +183,19 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "mmmod_animation.h"
 
-#define SCREEN_HEIGHT ((rmode->efbHeight - animation_frame->h) / 2 + 20)
-#define SCREEN_WIDTH ((rmode->fbWidth - animation_frame->w) / 2)
+static inline uint image_width(const GRRLIB_texImg *const image, uint screen_width)
+{
+    return (screen_width - image->w) / 2;
+}
+
+static inline uint image_height(const GRRLIB_texImg *const image, uint screen_height)
+{
+    return (screen_height - image->h) / 2 + 20;
+}
 
 void play_bios_animation()
 {
     const u8 *animation_frames[] = {
-        gc0_jpg,
         gc1_jpg,
         gc2_jpg,
         gc3_jpg,
@@ -341,20 +347,23 @@ void play_bios_animation()
         gc149_png,
         gc150_png,
         gc151_png,
-        gc152_jpg    
-    };
-
+        gc152_jpg};
+    const uint screen_width = rmode->fbWidth;
+    const uint screen_height = rmode->efbHeight;
+    
     ASND_Init();
     MP3Player_Init();
     MP3Player_PlayBuffer(bootanim_audio_mp3, bootanim_audio_mp3_size, NULL);
 
     GRRLIB_texImg *animation_frame = GRRLIB_LoadTextureJPG(gc0_jpg);
     GRRLIB_FillScreen(BLACK);
-    
+
     int i;
-    for (i = 1; i <= 152; i++)
+    for (i = 0; i < 152; i++)
     {
-        GRRLIB_DrawImg(SCREEN_WIDTH, SCREEN_HEIGHT, animation_frame, 0, 1, 1, 0xFFFFFFFF);
+        uint height = image_height(animation_frame, screen_height);
+        uint width = image_width(animation_frame, screen_width);
+        GRRLIB_DrawImg(width, height, animation_frame, 0, 1, 1, 0xFFFFFFFF);
         GRRLIB_FreeTexture(animation_frame);
         animation_frame = GRRLIB_LoadTexture(animation_frames[i]); // no need to check for NULL, frames are guaranteed to exist
         GRRLIB_Render();
@@ -362,7 +371,9 @@ void play_bios_animation()
 
     for (i = 255; i > 0; i -= 10)
     {
-        GRRLIB_DrawImg(SCREEN_WIDTH, SCREEN_HEIGHT, animation_frame, 0, 1, 1, RGBA(255, 255, 255, i));
+        uint height = image_height(animation_frame, screen_height);
+        uint width = image_width(animation_frame, screen_width);
+        GRRLIB_DrawImg(width, height, animation_frame, 0, 1, 1, RGBA(255, 255, 255, i));
         GRRLIB_Render();
     }
 
