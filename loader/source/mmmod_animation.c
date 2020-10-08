@@ -348,27 +348,20 @@ void play_bios_animation()
     MP3Player_Init();
     MP3Player_PlayBuffer(bootanim_audio_mp3, bootanim_audio_mp3_size, NULL);
 
-    GRRLIB_texImg *animation_frame = NULL;
-    GRRLIB_texImg *next_frame = GRRLIB_LoadTextureJPG(gc0_jpg);
-
+    GRRLIB_texImg *animation_frame = GRRLIB_LoadTextureJPG(gc0_jpg);
     GRRLIB_FillScreen(BLACK);
+    
     int i;
     for (i = 1; i <= 152; i++)
     {
-        if (animation_frame != NULL)
-        {
-            GRRLIB_FreeTexture(animation_frame);
-        }
-
-        animation_frame = next_frame;
-        next_frame = GRRLIB_LoadTexture(animation_frames[i]);
-        // no need to check for NULL, frames are guaranteed to exist
-
         GRRLIB_DrawImg(SCREEN_WIDTH, SCREEN_HEIGHT, animation_frame, 0, 1, 1, 0xFFFFFFFF);
         GRRLIB_Render();
+        
+        GRRLIB_FreeTexture(animation_frame);
+        animation_frame = GRRLIB_LoadTexture(animation_frames[i]);
+        // no need to check for NULL, frames are guaranteed to exist
     }
 
-    animation_frame = next_frame;
     for (i = 255; i > 0; i -= 10)
     {
         GRRLIB_DrawImg(SCREEN_WIDTH, SCREEN_HEIGHT, animation_frame, 0, 1, 1, RGBA(255, 255, 255, i));
