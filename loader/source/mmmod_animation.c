@@ -355,11 +355,9 @@ void play_bios_animation()
     for (i = 1; i <= 152; i++)
     {
         GRRLIB_DrawImg(SCREEN_WIDTH, SCREEN_HEIGHT, animation_frame, 0, 1, 1, 0xFFFFFFFF);
-        GRRLIB_Render();
-        
         GRRLIB_FreeTexture(animation_frame);
-        animation_frame = GRRLIB_LoadTexture(animation_frames[i]);
-        // no need to check for NULL, frames are guaranteed to exist
+        animation_frame = GRRLIB_LoadTexture(animation_frames[i]); // no need to check for NULL, frames are guaranteed to exist
+        GRRLIB_Render();
     }
 
     for (i = 255; i > 0; i -= 10)
