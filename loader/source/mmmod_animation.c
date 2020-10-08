@@ -183,60 +183,194 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "mmmod_animation.h"
 
-#define IMAGE_NAME_BUFFER_LENGTH 10
+#define SCREEN_HEIGHT ((rmode->efbHeight - animation_frame->h) / 2 + 20)
+#define SCREEN_WIDTH ((rmode->fbWidth - animation_frame->w) / 2)
 
-void play_bios_animation() 
+void play_bios_animation()
 {
+    const u8 *animation_frames[] = {
+        gc0_jpg,
+        gc1_jpg,
+        gc2_jpg,
+        gc3_jpg,
+        gc4_jpg,
+        gc5_jpg,
+        gc6_jpg,
+        gc7_jpg,
+        gc8_jpg,
+        gc9_jpg,
+        gc10_jpg,
+        gc11_jpg,
+        gc12_jpg,
+        gc13_jpg,
+        gc14_jpg,
+        gc15_jpg,
+        gc16_jpg,
+        gc17_jpg,
+        gc18_jpg,
+        gc19_jpg,
+        gc20_jpg,
+        gc21_jpg,
+        gc22_jpg,
+        gc23_jpg,
+        gc24_jpg,
+        gc25_jpg,
+        gc26_jpg,
+        gc27_jpg,
+        gc28_jpg,
+        gc29_jpg,
+        gc30_jpg,
+        gc31_jpg,
+        gc32_jpg,
+        gc33_jpg,
+        gc34_jpg,
+        gc35_jpg,
+        gc36_jpg,
+        gc37_jpg,
+        gc38_jpg,
+        gc39_jpg,
+        gc40_jpg,
+        gc41_jpg,
+        gc42_jpg,
+        gc43_jpg,
+        gc44_jpg,
+        gc45_jpg,
+        gc46_jpg,
+        gc47_jpg,
+        gc48_jpg,
+        gc49_jpg,
+        gc50_jpg,
+        gc51_jpg,
+        gc52_jpg,
+        gc53_jpg,
+        gc54_jpg,
+        gc55_jpg,
+        gc56_jpg,
+        gc57_jpg,
+        gc58_jpg,
+        gc59_jpg,
+        gc60_jpg,
+        gc61_jpg,
+        gc62_jpg,
+        gc63_jpg,
+        gc64_jpg,
+        gc65_jpg,
+        gc66_jpg,
+        gc67_jpg,
+        gc68_jpg,
+        gc69_jpg,
+        gc70_jpg,
+        gc71_jpg,
+        gc72_jpg,
+        gc73_jpg,
+        gc74_jpg,
+        gc75_jpg,
+        gc76_jpg,
+        gc77_jpg,
+        gc78_jpg,
+        gc79_jpg,
+        gc80_jpg,
+        gc81_jpg,
+        gc82_jpg,
+        gc83_jpg,
+        gc84_jpg,
+        gc85_jpg,
+        gc86_jpg,
+        gc87_jpg,
+        gc88_jpg,
+        gc89_jpg,
+        gc90_jpg,
+        gc91_jpg,
+        gc92_jpg,
+        gc93_jpg,
+        gc94_jpg,
+        gc95_jpg,
+        gc96_jpg,
+        gc97_jpg,
+        gc98_jpg,
+        gc99_jpg,
+        gc100_jpg,
+        gc101_jpg,
+        gc102_jpg,
+        gc103_jpg,
+        gc104_jpg,
+        gc105_jpg,
+        gc106_jpg,
+        gc107_jpg,
+        gc108_jpg,
+        gc109_jpg,
+        gc110_jpg,
+        gc111_jpg,
+        gc112_jpg,
+        gc113_jpg,
+        gc114_jpg,
+        gc115_jpg,
+        gc116_jpg,
+        gc117_jpg,
+        gc118_jpg,
+        gc119_png,
+        gc120_png,
+        gc121_png,
+        gc122_png,
+        gc123_png,
+        gc124_png,
+        gc125_png,
+        gc126_png,
+        gc127_png,
+        gc128_png,
+        gc129_png,
+        gc130_png,
+        gc131_png,
+        gc132_png,
+        gc133_png,
+        gc134_png,
+        gc135_png,
+        gc136_png,
+        gc137_png,
+        gc138_png,
+        gc139_png,
+        gc140_png,
+        gc141_png,
+        gc142_png,
+        gc143_png,
+        gc144_png,
+        gc145_png,
+        gc146_png,
+        gc147_png,
+        gc148_png,
+        gc149_png,
+        gc150_png,
+        gc151_png,
+        gc152_jpg    
+    };
+
     ASND_Init();
     MP3Player_Init();
     MP3Player_PlayBuffer(bootanim_audio_mp3, bootanim_audio_mp3_size, NULL);
 
     GRRLIB_texImg *animation_frame = NULL;
-    char *image_name = calloc(IMAGE_NAME_BUFFER_LENGTH, sizeof(char));
-    if (image_name == NULL) {
-        ExitToLoader(-1);
-    }
-
     GRRLIB_FillScreen(BLACK);
 
     int i = 0;
     for (; i <= 152; i++)
     {
-        char *image_file_type = strndup(i <= 118 || i == 152 ? "jpg" : "png", 3);
-        int ret = snprintf(image_name, IMAGE_NAME_BUFFER_LENGTH, "gc%d.%s", i, image_file_type);
-        if (ret <= 0 || ret >= IMAGE_NAME_BUFFER_LENGTH)
+        if (animation_frame != NULL)
         {
-            ExitToLoader(-1);
-        }
-
-        if (animation_frame) {
             GRRLIB_FreeTexture(animation_frame);
         }
 
-        animation_frame = GRRLIB_LoadTexture(gc0_jpg);
-        if (animation_frame == NULL)
-        {
-            ExitToLoader(-1);
-        }
+        animation_frame = GRRLIB_LoadTexture(animation_frames[i]);
+        // no need to check for NULL, frames are guaranteed to exist
 
-        const int screen_width = (rmode->fbWidth - animation_frame->w) / 2;
-        const int screen_height = (rmode->efbHeight - animation_frame->h) / 2 + 20;
-
-        GRRLIB_DrawImg(screen_width, screen_height, animation_frame, 0, 1, 1, 0xFFFFFFFF);
+        GRRLIB_DrawImg(SCREEN_WIDTH, SCREEN_HEIGHT, animation_frame, 0, 1, 1, 0xFFFFFFFF);
         GRRLIB_Render();
-
-        free(image_file_type);
     }
-
-    const int screen_width = (rmode->fbWidth - animation_frame->w) / 2;
-    const int screen_height = (rmode->efbHeight - animation_frame->h) / 2 + 20;
 
     for (i = 255; i > 0; i -= 10)
     {
-        GRRLIB_DrawImg(screen_width, screen_height, animation_frame, 0, 1, 1, RGBA(255, 255, 255, i));
+        GRRLIB_DrawImg(SCREEN_WIDTH, SCREEN_HEIGHT, animation_frame, 0, 1, 1, RGBA(255, 255, 255, i));
         GRRLIB_Render();
     }
 
     GRRLIB_FreeTexture(animation_frame);
-    free(image_name);
 }
