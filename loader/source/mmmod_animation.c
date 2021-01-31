@@ -2,7 +2,7 @@
 
 Nintendont (Loader) - Playing Gamecubes in Wii mode on a Wii U
 
-Copyright (C) 2020  send0r
+Copyright (C) 2021  drescherflo (send0r)
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -369,11 +369,11 @@ void play_bios_animation()
         GRRLIB_Render();
     }
 
+    uint last_frame_height = image_height(animation_frame, screen_height);
+    uint last_frame_width = image_width(animation_frame, screen_width);
     for (i = 255; i > 0; i -= 10)
     {
-        uint height = image_height(animation_frame, screen_height);
-        uint width = image_width(animation_frame, screen_width);
-        GRRLIB_DrawImg(width, height, animation_frame, 0, 1, 1, RGBA(255, 255, 255, i));
+        GRRLIB_DrawImg(last_frame_height, last_frame_width, animation_frame, 0, 1, 1, RGBA(255, 255, 255, i));
         GRRLIB_Render();
     }
 
