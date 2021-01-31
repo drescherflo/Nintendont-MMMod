@@ -183,12 +183,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "mmmod_animation.h"
 
-static inline uint image_width(const GRRLIB_texImg *const image, uint screen_width)
+static inline unsigned int image_width(const GRRLIB_texImg *const image, unsigned int screen_width)
 {
     return (screen_width - image->w) / 2;
 }
 
-static inline uint image_height(const GRRLIB_texImg *const image, uint screen_height)
+static inline unsigned int image_height(const GRRLIB_texImg *const image, unsigned int screen_height)
 {
     return (screen_height - image->h) / 2 + 20;
 }
@@ -348,9 +348,9 @@ void play_bios_animation()
         gc150_png,
         gc151_png,
         gc152_jpg};
-    const uint screen_width = rmode->fbWidth;
-    const uint screen_height = rmode->efbHeight;
-    
+    const unsigned int screen_width = rmode->fbWidth;
+    const unsigned int screen_height = rmode->efbHeight;
+
     ASND_Init();
     MP3Player_Init();
     MP3Player_PlayBuffer(bootanim_audio_mp3, bootanim_audio_mp3_size, NULL);
@@ -361,19 +361,19 @@ void play_bios_animation()
     int i;
     for (i = 0; i < 152; i++)
     {
-        uint height = image_height(animation_frame, screen_height);
-        uint width = image_width(animation_frame, screen_width);
+        const unsigned int height = image_height(animation_frame, screen_height);
+        const unsigned int width = image_width(animation_frame, screen_width);
         GRRLIB_DrawImg(width, height, animation_frame, 0, 1, 1, 0xFFFFFFFF);
         GRRLIB_FreeTexture(animation_frame);
         animation_frame = GRRLIB_LoadTexture(animation_frames[i]); // no need to check for NULL, frames are guaranteed to exist
         GRRLIB_Render();
     }
 
-    uint last_frame_height = image_height(animation_frame, screen_height);
-    uint last_frame_width = image_width(animation_frame, screen_width);
+    const unsigned int last_frame_height = image_height(animation_frame, screen_height);
+    const unsigned int last_frame_width = image_width(animation_frame, screen_width);
     for (i = 255; i > 0; i -= 10)
     {
-        GRRLIB_DrawImg(last_frame_height, last_frame_width, animation_frame, 0, 1, 1, RGBA(255, 255, 255, i));
+        GRRLIB_DrawImg(last_frame_width, last_frame_height, animation_frame, 0, 1, 1, RGBA(255, 255, 255, i));
         GRRLIB_Render();
     }
 

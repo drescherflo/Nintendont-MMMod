@@ -30,27 +30,28 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "mmmod_theming.h"
 
 #define DEFAULT_PATH "/apps/Nintendont/"
-#define TEXT_COLOR_INI_NAME "textcolor.ini"
 
 extern char launch_dir[MAXPATHLEN];
 void load_text_color()
 {
+    const char *text_color_ini_name = "textcolor.ini";
+
     // check if a launch directory exists
-    size_t launch_dir_len = strnlen(launch_dir, MAXPATHLEN);
-    bool launch_dir_exists = launch_dir_len;
+    const size_t launch_dir_len = strnlen(launch_dir, MAXPATHLEN);
+    const bool launch_dir_exists = launch_dir_len;
 
     // determine length of path to textcolor.ini
     size_t color_ini_path_len;
     if (launch_dir_exists)
     {
-        color_ini_path_len = launch_dir_len + strlen(TEXT_COLOR_INI_NAME) + 1;
+        color_ini_path_len = launch_dir_len + strlen(text_color_ini_name) + 1;
     }
     else
     {
-        color_ini_path_len = strlen(DEFAULT_PATH) + strlen(TEXT_COLOR_INI_NAME) + 1;
+        color_ini_path_len = strlen(DEFAULT_PATH) + strlen(text_color_ini_name) + 1;
     }
-    
-    char *color_ini_path = (char *) calloc(color_ini_path_len, sizeof(char));
+
+    char *color_ini_path = (char *)calloc(color_ini_path_len, sizeof(char));
     if (color_ini_path == NULL)
     {
         // calloc failed
@@ -58,7 +59,7 @@ void load_text_color()
     }
 
     // build path
-    snprintf(color_ini_path, color_ini_path_len, "%s%s", launch_dir_exists ? launch_dir : DEFAULT_PATH, TEXT_COLOR_INI_NAME);
+    snprintf(color_ini_path, color_ini_path_len, "%s%s", launch_dir_exists ? launch_dir : DEFAULT_PATH, text_color_ini_name);
 
     // try to read text color
     FIL color_ini_file;
@@ -70,7 +71,7 @@ void load_text_color()
         return;
     }
 
-    char *read_color = (char *) calloc(7, sizeof(char)); // 6 characters for RGB and 1 for null terminator
+    char *read_color = (char *)calloc(7, sizeof(char)); // 6 characters for RGB and 1 for null terminator
     if (read_color == NULL)
     {
         // calloc failed
@@ -89,7 +90,7 @@ void load_text_color()
     }
 
     // convert RGB string to number and append 0xFF as A-value of RGBA
-    text_color = (((unsigned int) strtoul(read_color, NULL, 16)) << 8) + 0xFF;
+    text_color = (((unsigned int)strtoul(read_color, NULL, 16)) << 8) + 0xFF;
     custom_text_color = true;
 
     free(read_color);
