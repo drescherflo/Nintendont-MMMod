@@ -71,6 +71,7 @@ void load_text_color()
 
     // convert RGB string to number and append 0xFF as A-value of RGBA
     text_color = (((unsigned int) strtoul(read_color, NULL, 16)) << 8) + 0xFF;
+    custom_text_color = true;
 
     free(read_color);
     free(color_ini_path);

@@ -115,11 +115,11 @@ static inline bool LatestVersion(int *major, int *minor, int *current_line) {
 	unsigned int filesize;
 	int line = *current_line;
 
-	PrintFormat(DEFAULT_SIZE, BLACK, MENU_POS_X, MENU_POS_Y + 20*line, Downloads[DOWNLOAD_VERSION].text);
+	PrintFormat(DEFAULT_SIZE, text_color, MENU_POS_X, MENU_POS_Y + 20*line, Downloads[DOWNLOAD_VERSION].text);
 	UpdateScreen();
 	line++;
 	if(!http_request(Downloads[DOWNLOAD_VERSION].url, Downloads[DOWNLOAD_VERSION].max_size)) {
-		PrintFormat(DEFAULT_SIZE, BLACK, MENU_POS_X, MENU_POS_Y + 20*line, "Failed to retrieve version");
+		PrintFormat(DEFAULT_SIZE, text_color, MENU_POS_X, MENU_POS_Y + 20*line, "Failed to retrieve version");
 		UpdateScreen();
 		*current_line = line;
 		return false;
@@ -139,9 +139,9 @@ static inline bool LatestVersion(int *major, int *minor, int *current_line) {
 	if (outbuf != NULL) free(outbuf);
 	if ((*major <= NIN_MAJOR_VERSION) && (*minor <= NIN_MINOR_VERSION)) {
 		bool still_download = true;
-		PrintFormat(DEFAULT_SIZE, BLACK, MENU_POS_X, MENU_POS_Y + 20*line, "You already have the latest version");
+		PrintFormat(DEFAULT_SIZE, text_color, MENU_POS_X, MENU_POS_Y + 20*line, "You already have the latest version");
 		line++;
-		PrintFormat(DEFAULT_SIZE, BLACK, MENU_POS_X, MENU_POS_Y + 20*line, "Download anyway? (A: Yes, B: No)");
+		PrintFormat(DEFAULT_SIZE, text_color, MENU_POS_X, MENU_POS_Y + 20*line, "Download anyway? (A: Yes, B: No)");
 		line++;
 		UpdateScreen();
 		while(true) {
@@ -184,7 +184,7 @@ static s32 Download(DOWNLOADS download_number)  {
 	PrintInfo();
 
 	snprintf(filepath, sizeof(filepath), "%s%s", dir, Downloads[download_number].filename);
-	PrintFormat(DEFAULT_SIZE, BLACK, MENU_POS_X, MENU_POS_Y + 20*line, Downloads[download_number].text);
+	PrintFormat(DEFAULT_SIZE, text_color, MENU_POS_X, MENU_POS_Y + 20*line, Downloads[download_number].text);
 	UpdateScreen();
 
 	line++;
@@ -197,14 +197,14 @@ static s32 Download(DOWNLOADS download_number)  {
 		goto end;
 	}
 	gprintf("Network Initialized\r\n");
-	PrintFormat(DEFAULT_SIZE, BLACK, MENU_POS_X, MENU_POS_Y + 20*line, "Network Initialized");
+	PrintFormat(DEFAULT_SIZE, text_color, MENU_POS_X, MENU_POS_Y + 20*line, "Network Initialized");
 	UpdateScreen();
 	ssl_init(); //only once needed
 	line++;
 	if (download_number == DOWNLOAD_NINTENDONT) {
 		ret = LatestVersion(&major, &minor, &line);
 		if (!ret) {
-			PrintFormat(DEFAULT_SIZE, BLACK, MENU_POS_X, MENU_POS_Y + 20*line, "Download Cancelled");
+			PrintFormat(DEFAULT_SIZE, text_color, MENU_POS_X, MENU_POS_Y + 20*line, "Download Cancelled");
 			UpdateScreen();
 			if (outbuf != NULL) free(outbuf);
 			net_deinit();
@@ -212,7 +212,7 @@ static s32 Download(DOWNLOADS download_number)  {
 			return 0;
 		}
 
-		PrintFormat(DEFAULT_SIZE, BLACK, MENU_POS_X, MENU_POS_Y + 20*line, "Downloading Nintendont v%i.%i", major, minor);
+		PrintFormat(DEFAULT_SIZE, text_color, MENU_POS_X, MENU_POS_Y + 20*line, "Downloading Nintendont v%i.%i", major, minor);
 		UpdateScreen();
 		line++;
 	}
@@ -237,7 +237,7 @@ static s32 Download(DOWNLOADS download_number)  {
 		goto end;
 	}
 
-	PrintFormat(DEFAULT_SIZE, BLACK, MENU_POS_X, MENU_POS_Y + 20*line, "Download Complete");
+	PrintFormat(DEFAULT_SIZE, text_color, MENU_POS_X, MENU_POS_Y + 20*line, "Download Complete");
 	UpdateScreen();
 	line++;
 	if (!dir_argument_exists) {
@@ -294,7 +294,7 @@ static s32 Download(DOWNLOADS download_number)  {
 		}
 	}
 	if (ret == 1) {
-		PrintFormat(DEFAULT_SIZE, BLACK, MENU_POS_X, MENU_POS_Y + 20*line, "Update Complete");
+		PrintFormat(DEFAULT_SIZE, text_color, MENU_POS_X, MENU_POS_Y + 20*line, "Update Complete");
 		UpdateScreen();
 		line++;
 	}
@@ -303,7 +303,7 @@ end:
 	if (ret != 1) {
 		PrintFormat(DEFAULT_SIZE, MAROON, MENU_POS_X, MENU_POS_Y + 20*line, "Update Error: %s", errmsg);
 	} else {
-		PrintFormat(DEFAULT_SIZE, BLACK, MENU_POS_X, MENU_POS_Y + 20*line, "Restart Nintendont to complete update");
+		PrintFormat(DEFAULT_SIZE, text_color, MENU_POS_X, MENU_POS_Y + 20*line, "Restart Nintendont to complete update");
 	}
 	UpdateScreen();
 	if (outbuf != NULL) free(outbuf);
@@ -323,11 +323,11 @@ void UpdateNintendont(void) {
 			PrintButtonActions("Go Back", "Update", NULL, NULL);
 
 			// Update menu.
-			PrintFormat(DEFAULT_SIZE, BLACK, MENU_POS_X + 50, MENU_POS_Y + 20*5, "Download Nintendont");
-			PrintFormat(DEFAULT_SIZE, BLACK, MENU_POS_X + 50, MENU_POS_Y + 20*6, "Download titles.txt");
-			PrintFormat(DEFAULT_SIZE, BLACK, MENU_POS_X + 50, MENU_POS_Y + 20*7, "Download controllers.zip");
-			PrintFormat(DEFAULT_SIZE, BLACK, MENU_POS_X + 50, MENU_POS_Y + 20*8, "Download gcn_md5.txt");
-			PrintFormat(DEFAULT_SIZE, BLACK, MENU_POS_X + 35, MENU_POS_Y + 20*(5+selected), ARROW_RIGHT);
+			PrintFormat(DEFAULT_SIZE, text_color, MENU_POS_X + 50, MENU_POS_Y + 20*5, "Download Nintendont");
+			PrintFormat(DEFAULT_SIZE, text_color, MENU_POS_X + 50, MENU_POS_Y + 20*6, "Download titles.txt");
+			PrintFormat(DEFAULT_SIZE, text_color, MENU_POS_X + 50, MENU_POS_Y + 20*7, "Download controllers.zip");
+			PrintFormat(DEFAULT_SIZE, text_color, MENU_POS_X + 50, MENU_POS_Y + 20*8, "Download gcn_md5.txt");
+			PrintFormat(DEFAULT_SIZE, text_color, MENU_POS_X + 35, MENU_POS_Y + 20*(5+selected), ARROW_RIGHT);
 			redraw = false;
 
 			// Render the screen here to prevent a blank frame
