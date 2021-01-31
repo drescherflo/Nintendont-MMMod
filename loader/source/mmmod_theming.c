@@ -29,19 +29,38 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "mmmod_theming.h"
 
+#define DEFAULT_PATH "/apps/Nintendont/"
+#define TEXT_COLOR_INI_NAME "textcolor.ini"
+
 extern char launch_dir[MAXPATHLEN];
 void load_text_color()
 {
-    char *color_ini_path = (char *) calloc(MAXPATHLEN, sizeof(char));
+    // check if a launch directory exists
+    size_t launch_dir_len = strnlen(launch_dir, MAXPATHLEN);
+    bool launch_dir_exists = launch_dir_len;
+
+    // determine length of path to textcolor.ini
+    size_t color_ini_path_len;
+    if (launch_dir_exists)
+    {
+        color_ini_path_len = launch_dir_len + strlen(TEXT_COLOR_INI_NAME) + 1;
+    }
+    else
+    {
+        color_ini_path_len = strlen(DEFAULT_PATH) + strlen(TEXT_COLOR_INI_NAME) + 1;
+    }
+    
+    char *color_ini_path = (char *) calloc(color_ini_path_len, sizeof(char));
     if (color_ini_path == NULL)
     {
         // calloc failed
         return;
     }
 
-    bool launch_dir_exists = strnlen(launch_dir, MAXPATHLEN);
-    snprintf(color_ini_path, MAXPATHLEN, "%stextcolor.ini", launch_dir_exists ? launch_dir : "/apps/Nintendont/");
+    // build path
+    snprintf(color_ini_path, color_ini_path_len, "%s%s", launch_dir_exists ? launch_dir : DEFAULT_PATH, TEXT_COLOR_INI_NAME);
 
+    // try to read text color
     FIL color_ini_file;
     FRESULT f_op_result = f_open_char(&color_ini_file, color_ini_path, FA_READ);
     if (f_op_result != FR_OK)
