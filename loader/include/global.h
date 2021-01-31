@@ -86,6 +86,7 @@ extern FILE *cfg;
 extern GRRLIB_ttfFont *myFont;
 extern GRRLIB_texImg *background;
 extern GRRLIB_texImg *screen_buffer;
+extern uint text_color;
 
 enum
 {

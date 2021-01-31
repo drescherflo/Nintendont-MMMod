@@ -48,6 +48,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 GRRLIB_ttfFont *myFont;
 GRRLIB_texImg *background;
 GRRLIB_texImg *screen_buffer;
+uint text_color = BLACK;
 static bool bg_isWidescreen = false;
 static float bg_xScale = 1.0f;
 static int bg_xPos = 0;

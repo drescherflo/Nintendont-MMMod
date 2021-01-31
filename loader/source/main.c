@@ -53,6 +53,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "diskio.h"
 
 #include "mmmod_animation.h"
+#include "mmmod_theming.h"
 
 // from diskio.c
 extern DISC_INTERFACE *driver[_VOLUMES];
@@ -765,6 +766,10 @@ int main(int argc, char **argv)
 		PrintFormat(DEFAULT_SIZE, MAROON, MENU_POS_X, 232, "No FAT device found!");
 		ExitToLoader(1);
 	}
+
+	// Load custom text color
+	load_text_color();
+
 	// Seems like some programs start without any args
 	if(argc > 0 && argv != NULL && argv[0] != NULL)
 	{
